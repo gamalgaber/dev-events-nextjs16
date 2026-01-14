@@ -36,6 +36,11 @@ async function connectToDatabase(): Promise<Connection> {
       'Please define the MONGODB_URI environment variable inside .env.local'
     );
   }
+    
+  // Initialize cache if needed
+  if (!globalWithMongo.mongoose) {
+    globalWithMongo.mongoose = { conn: null, promise: null };
+  }
 
   // Create new connection promise
   const promise = mongoose
@@ -56,11 +61,7 @@ async function connectToDatabase(): Promise<Connection> {
       }
       throw error;
     });
-
-  // Cache the promise to prevent duplicate connection attempts
-  if (!globalWithMongo.mongoose) {
-    globalWithMongo.mongoose = { conn: null, promise: null };
-  }
+    
   globalWithMongo.mongoose.promise = promise;
 
   // Wait for connection and cache the result

@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
+import Event from './event.model';
 
 interface IBooking extends Document {
   eventId: Types.ObjectId;
@@ -39,7 +40,6 @@ bookingSchema.pre<IBooking>('save', async function (next) {
   }
 
   try {
-    const Event = mongoose.model('Event');
     const eventExists = await Event.findById(this.eventId);
 
     if (!eventExists) {

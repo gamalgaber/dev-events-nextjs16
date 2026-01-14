@@ -123,7 +123,10 @@ eventSchema.pre<IEvent>('save', function (next) {
     if (isNaN(parsedDate.getTime())) {
       return next(new Error('Invalid date format. Use YYYY-MM-DD.'));
     }
-    this.date = parsedDate.toISOString().split('T')[0];
+    const year = parsedDate.getFullYear();
+    const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+    const day = String(parsedDate.getDate()).padStart(2, '0');
+    this.date = `${year}-${month}-${day}`;
   }
 
   // Normalize time to HH:MM format
